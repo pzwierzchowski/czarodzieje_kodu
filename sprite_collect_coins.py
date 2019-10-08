@@ -90,7 +90,7 @@ class MyGame(arcade.Window):
         # Create the zombies
         for i in range(ZOMBIE_COUNT):
 
-            zombie = arcade.Sprite("images/character_zombie.png", SPRITE_SCALING_COIN)
+            zombie = arcade.Sprite("images/character_zombie.png", SPRITE_SCALING_ZOMBIE)
             zombie.center_x = random.randrange(SCREEN_WIDTH)
             zombie.center_y = random.randrange(SCREEN_HEIGHT)
             self.zombie_list.append(zombie)
