@@ -1,12 +1,7 @@
 """
-Sprite Collect Coins
+Sprite Collect Start
 
-Simple program to show basic sprite usage.
-
-Artwork from http://kenney.nl
-
-If Python and Arcade are installed, this example can be run from the command line with:
-python -m arcade.examples.sprite_collect_coins
+python -m arcade.examples.sprite_collect_stars
 """
 
 import random
@@ -14,19 +9,19 @@ import arcade
 import os
 
 # --- Constants ---
-SPRITE_SCALING_PLAYER = 0.7
-SPRITE_SCALING_COIN = 0.1
-SPRITE_SCALING_ZOMBIE = 0.25
+SPRITE_SCALING_PLAYER = 0.4
+SPRITE_SCALING_STAR = 0.1
+SPRITE_SCALING_ALIEN = 0.4
 
-COIN_COUNT = 1000
-ZOMBIE_COUNT = 20
+STAR_COUNT = 1200
+ALIEN_COUNT = 20
 
 SCREEN_WIDTH = 1200
 SCREEN_HEIGHT = 900
 SCREEN_TITLE = "Sprite Collect Coins Example"
 
 
-class MyGame(arcade.Window):
+class MojaGra(arcade.Window):
     """ Our custom Window Class"""
 
     def __init__(self):
@@ -43,63 +38,63 @@ class MyGame(arcade.Window):
 
         # Variables that will hold sprite lists
         self.player_list = None
-        self.coin_list = None
-        self.zombie_list = None
+        self.star_list = None
+        self.alien_list = None
 
-        # Set up the player infopytfon
+        # Set up the player info
         self.player_sprite = None
         self.score = 0
 
         # Don't show the mouse cursor
         self.set_mouse_visible(False)
 
-        arcade.set_background_color(arcade.color.AMAZON)
+        arcade.set_background_color(arcade.color.COBALT)
 
     def setup(self):
         """ Set up the game and initialize the variables. """
 
         # Sprite lists
         self.player_list = arcade.SpriteList()
-        self.coin_list = arcade.SpriteList()
-        self.zombie_list = arcade.SpriteList()
+        self.star_list = arcade.SpriteList()
+        self.alien_list = arcade.SpriteList()
 
         # Score
         self.score = 0
 
         # Set up the player
         # Character image from kenney.nl
-        self.player_sprite = arcade.Sprite("images/character.png", SPRITE_SCALING_PLAYER)
+        self.player_sprite = arcade.Sprite("images/character_female.png", SPRITE_SCALING_PLAYER)
         self.player_sprite.center_x = 50
         self.player_sprite.center_y = 50
         self.player_list.append(self.player_sprite)
 
         # Create the coins
-        for i in range(COIN_COUNT):
+        for i in range(STAR_COUNT):
 
-            # Create the coin instance
+            # Create the star instance
             # Coin image from kenney.nl
-            coin = arcade.Sprite("images/coin_01.png", SPRITE_SCALING_COIN)
+            star = arcade.Sprite("images/star.png", SPRITE_SCALING_STAR)
 
-            # Position the coin
-            coin.center_x = random.randrange(SCREEN_WIDTH)
-            coin.center_y = random.randrange(SCREEN_HEIGHT)
+            # Position the star
+            star.center_x = random.randrange(SCREEN_WIDTH)
+            star.center_y = random.randrange(SCREEN_HEIGHT)
 
-            # Add the coin to the lists
-            self.coin_list.append(coin)
+            # Add the star to the lists
+            self.star_list.append(star)
 
         # Create the zombies
-        for i in range(ZOMBIE_COUNT):
+        for i in range(ALIEN_COUNT):
 
-            zombie = arcade.Sprite("images/character_zombie.png", SPRITE_SCALING_ZOMBIE)
-            zombie.center_x = random.randrange(SCREEN_WIDTH)
-            zombie.center_y = random.randrange(SCREEN_HEIGHT)
-            self.zombie_list.append(zombie)
+            alien = arcade.Sprite("images/character_alien.png", SPRITE_SCALING_ALIEN)
+            alien.center_x = random.randrange(SCREEN_WIDTH)
+            alien.center_y = random.randrange(SCREEN_HEIGHT)
+            self.alien_list.append(alien)
 
     def on_draw(self):
         """ Draw everything """
         arcade.start_render()
-        self.coin_list.draw()
-        self.zombie_list.draw()
+        self.star_list.draw()
+        self.alien_list.draw()
         self.player_list.draw()
 
         # Put the text on the screen.
@@ -118,26 +113,26 @@ class MyGame(arcade.Window):
 
         # Call update on all sprites (The sprites don't do much in this
         # example though.)
-        self.coin_list.update()
-        self.zombie_list.update()
+        self.star_list.update()
+        self.alien_list.update()
 
         # Generate a list of all sprites that collided with the player.
-        coins_hit_list = arcade.check_for_collision_with_list(self.player_sprite, self.coin_list)
-        zombie_hit_list = arcade.check_for_collision_with_list(self.player_sprite, self.zombie_list)
+        star_hit_list = arcade.check_for_collision_with_list(self.player_sprite, self.star_list)
+        alien_hit_list = arcade.check_for_collision_with_list(self.player_sprite, self.alien_list)
 
         # Loop through each colliding sprite, remove it, and add to the score.
-        for coin in coins_hit_list:
-            coin.kill()
+        for star in star_hit_list:
+            star.kill()
             self.score += 1
 
-        for zombie in zombie_hit_list:
-            zombie.kill()
+        for alien in alien_hit_list:
+            alien.kill()
             self.score -= 10
 
 
 def main():
     """ Main method """
-    window = MyGame()
+    window = MojaGra()
     window.setup()
     arcade.run()
 
