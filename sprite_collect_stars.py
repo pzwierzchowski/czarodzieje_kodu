@@ -1,14 +1,14 @@
 """
 Sprite Collect Start
 
-python -m arcade.examples.sprite_collect_stars
+C:\Python37\python.exe C:\czarodzieje_kodu\sprite_collect_stars.py
 """
 
 import random
 import arcade
 import os
 
-# --- Constants ---
+# --- Skalowania ---
 SPRITE_SCALING_PLAYER = 0.4
 SPRITE_SCALING_STAR = 0.1
 SPRITE_SCALING_ALIEN = 0.4
@@ -18,71 +18,64 @@ ALIEN_COUNT = 20
 
 SCREEN_WIDTH = 1200
 SCREEN_HEIGHT = 900
-SCREEN_TITLE = "Sprite Collect Coins Example"
+SCREEN_TITLE = "Kosmiczna przygoda"
 
 
 class MojaGra(arcade.Window):
-    """ Our custom Window Class"""
 
     def __init__(self):
         """ Initializer """
         # Call the parent class initializer
         super().__init__(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE)
-
-        # Set the working directory (where we expect to find files) to the same
-        # directory this .py file is in. You can leave this out of your own
-        # code, but it is needed to easily run the examples using "python -m"
-        # as mentioned at the top of this program.
+        
         file_path = os.path.dirname(os.path.abspath(__file__))
         os.chdir(file_path)
 
-        # Variables that will hold sprite lists
+        # Zmienne trzymające listy
         self.player_list = None
         self.star_list = None
         self.alien_list = None
 
-        # Set up the player info
+        # Informacje o graczu
         self.player_sprite = None
         self.score = 0
 
-        # Don't show the mouse cursor
+        # Ukrycie kursora myszy
         self.set_mouse_visible(False)
 
         arcade.set_background_color(arcade.color.COBALT)
 
     def setup(self):
-        """ Set up the game and initialize the variables. """
+        """ Ustawienie gry i użycie zmiennych """
 
-        # Sprite lists
+        # Listy
         self.player_list = arcade.SpriteList()
         self.star_list = arcade.SpriteList()
         self.alien_list = arcade.SpriteList()
 
-        # Score
+        # Punktacja
         self.score = 0
 
-        # Set up the player
-        # Character image from kenney.nl
+        # Ustawienia gracza
         self.player_sprite = arcade.Sprite("images/character_female.png", SPRITE_SCALING_PLAYER)
         self.player_sprite.center_x = 50
         self.player_sprite.center_y = 50
         self.player_list.append(self.player_sprite)
 
-        # Create the coins
+        # Stworzenie gwiazd
         for i in range(STAR_COUNT):
 
-            # Create the star instance
-            # Coin image from kenney.nl
+            # Utworzenie instancji gwiazdy
             star = arcade.Sprite("images/star.png", SPRITE_SCALING_STAR)
 
-            # Position the star
+            # Pozycje gwiazd
             star.center_x = random.randrange(SCREEN_WIDTH)
             star.center_y = random.randrange(SCREEN_HEIGHT)
 
-            # Add the star to the lists
+            # Dodanie gwiazdy do listy
             self.star_list.append(star)
 
-        # Create the zombies
+        # Utworzenie robotow
         for i in range(ALIEN_COUNT):
 
             alien = arcade.Sprite("images/character_alien.png", SPRITE_SCALING_ALIEN)
@@ -91,36 +84,35 @@ class MojaGra(arcade.Window):
             self.alien_list.append(alien)
 
     def on_draw(self):
-        """ Draw everything """
+        """ Wyrysowanie obiektów """
         arcade.start_render()
         self.star_list.draw()
         self.alien_list.draw()
         self.player_list.draw()
 
-        # Put the text on the screen.
+        # Wypisanie tekstu
         output = f"Wynik: {self.score}"
         arcade.draw_text(output, 10, 20, arcade.color.WHITE, 14)
 
     def on_mouse_motion(self, x, y, dx, dy):
         """ Handle Mouse Motion """
 
-        # Move the center of the player sprite to match the mouse x, y
+        # Ustawienie gracza na pozycji 
         self.player_sprite.center_x = x
         self.player_sprite.center_y = y
 
     def update(self, delta_time):
-        """ Movement and game logic """
+        """ Logika i ruchy """
 
-        # Call update on all sprites (The sprites don't do much in this
-        # example though.)
+        # Aktualizacja obiektów
         self.star_list.update()
         self.alien_list.update()
 
-        # Generate a list of all sprites that collided with the player.
+        # Generowanie list kolizji
         star_hit_list = arcade.check_for_collision_with_list(self.player_sprite, self.star_list)
         alien_hit_list = arcade.check_for_collision_with_list(self.player_sprite, self.alien_list)
 
-        # Loop through each colliding sprite, remove it, and add to the score.
+        # Pętla punktacji dla gwiazd i robotów
         for star in star_hit_list:
             star.kill()
             self.score += 1
@@ -131,7 +123,7 @@ class MojaGra(arcade.Window):
 
 
 def main():
-    """ Main method """
+    """ główna metoda """
     window = MojaGra()
     window.setup()
     arcade.run()
